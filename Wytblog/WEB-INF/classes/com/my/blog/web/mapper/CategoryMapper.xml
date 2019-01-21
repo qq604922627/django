@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.web.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.my.blog.core.entity.Category">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_name" jdbcType="VARCHAR" property="category_name" />
+    <result column="category_image" jdbcType="VARCHAR" property="category_image" />  
+  </resultMap>
+  
+    <resultMap id="cmap" type="com.my.blog.core.entity.Category">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_name" jdbcType="VARCHAR" property="category_name" />
+    <result column="category_image" jdbcType="VARCHAR" property="category_image" />  
+    <collection property="cslist" column="id" select="com.my.blog.web.mapper.CategorysonMapper.selectBycategoryid" >
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_id" jdbcType="INTEGER" property="category_id" />
+    <result column="categoryson_name" jdbcType="VARCHAR" property="categoryson_name" />
+    <result column="categoryson_image" jdbcType="VARCHAR" property="categoryson_image" />
+     </collection>
+  </resultMap>
+  
+  
+  
+ <select id="categorygod" resultMap="cmap">
+ select * from t_category 
+ </select>
+  
+  <sql id="Base_Column_List">
+    id, category_name, category_image
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectCategor"  resultType="com.my.blog.core.entity.Category">
+    select 
+    <include refid="Base_Column_List" />
+    from t_category
+  </select>
+ 
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.my.blog.core.entity.Category">
+    insert into t_category (id, category_name, category_image
+      )
+    values (#{id,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{categoryImage,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.my.blog.core.entity.Category">
+    insert into t_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="categoryName != null">
+        category_name,
+      </if>
+      <if test="categoryImage != null">
+        category_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryImage != null">
+        #{categoryImage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.my.blog.core.entity.Category">
+    update t_category
+    <set>
+      <if test="categoryName != null">
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryImage != null">
+        category_image = #{categoryImage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.my.blog.core.entity.Category">
+    update t_category
+    set category_name = #{categoryName,jdbcType=VARCHAR},
+      category_image = #{categoryImage,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.web.mapper.ContentMapper">
+  <resultMap id="BaseResultMap" type="com.my.blog.core.entity.Content">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tiele" jdbcType="VARCHAR" property="tiele" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="category_id" jdbcType="INTEGER" property="category_id" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="pageview" jdbcType="VARCHAR" property="pageview" />
+    <result column="user_id" jdbcType="INTEGER" property="user_id" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+  </resultMap>
+  
+  <resultMap id="cumap" type="com.my.blog.core.entity.Content">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tiele" jdbcType="VARCHAR" property="tiele" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="category_id" jdbcType="INTEGER" property="category_id" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="pageview" jdbcType="VARCHAR" property="pageview" />
+    <result column="user_id" jdbcType="INTEGER" property="user_id" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <collection property="user" column="user_id" select="com.my.blog.web.mapper.UserMapper.selectByPrimaryKey" >
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="regist_time" jdbcType="TIMESTAMP" property="registTime"/>
+    </collection>
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    id, tiele, text, time, category_id, keyword, pageview, user_id, ip ,image
+  </sql>
+  <select id="getAllContent" resultType="com.my.blog.core.entity.Content">
+  select
+  *
+  from t_content
+  </select>
+ <select id="selectByPageview" resultType="com.my.blog.core.entity.Content">
+ select
+ *
+ from t_content order by pageview desc;
+ </select>
+ <select id="selectByCategoryId" parameterType="java.lang.Integer" resultType="com.my.blog.core.entity.Content">
+ select
+ *
+ from t_content 
+ where category_id=#{categoryId}
+ 
+ </select>
+  <select id="selectByPageviewn" parameterType="int" resultType="com.my.blog.core.entity.Content">
+  
+ select
+ *
+ from t_content order by pageview desc limit  0,#{n};
+ </select>
+ 
+ <select id="getAllContentPage1" parameterType="int" resultMap="cumap">
+  select
+  *
+  from t_content order by time desc limit #{start},#{pagesize}
+  </select>
+  <select id="selectBytime" resultType="com.my.blog.core.entity.Content">
+  select
+  *
+  from t_content
+  order by time desc
+  
+  </select>
+  
+  <select id="getAllContentPage" parameterType="int" resultType="com.my.blog.core.entity.Content">
+  select
+  *
+  from t_content limit #{start},#{pagesize}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_content
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_content
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.my.blog.core.entity.Content">
+    insert into t_content (id, tiele, text, 
+      time, category_id, keyword, 
+      pageview, user_id, ip ,image
+      )
+    values (#{id,jdbcType=INTEGER}, #{tiele,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{categoryId,jdbcType=INTEGER}, #{keyword,jdbcType=VARCHAR}, 
+      #{pageview,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR},#{image,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.my.blog.core.entity.Content">
+    insert into t_content
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tiele != null">
+        tiele,
+      </if>
+      <if test="text != null">
+        text,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="keyword != null">
+        keyword,
+      </if>
+      <if test="pageview != null">
+        pageview,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="image !=null">
+      image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tiele != null">
+        #{tiele,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null">
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="pageview != null">
+        #{pageview,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+       <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+    <insert id="inserttest" parameterType="com.my.blog.core.entity.Content" useGeneratedKeys="true" keyProperty="id">
+    insert into t_content
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tiele != null">
+        tiele,
+      </if>
+      <if test="text != null">
+        text,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="keyword != null">
+        keyword,
+      </if>
+      <if test="pageview != null">
+        pageview,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+       <if test="image != null">
+        image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tiele != null">
+        #{tiele,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null">
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="pageview != null">
+        #{pageview,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.my.blog.core.entity.Content">
+    update t_content
+    <set>
+      <if test="tiele != null">
+        tiele = #{tiele,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null">
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null">
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="pageview != null">
+        pageview = #{pageview,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+       <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.my.blog.core.entity.Content">
+    update t_content
+    set tiele = #{tiele,jdbcType=VARCHAR},
+      text = #{text,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      pageview = #{pageview,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

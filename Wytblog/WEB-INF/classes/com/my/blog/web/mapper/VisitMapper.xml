@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.web.mapper.VisitMapper">
+  <resultMap id="BaseResultMap" type="com.my.blog.core.entity.Visit">
+    <id column="visit_id" jdbcType="INTEGER" property="visitId" />
+    <result column="visit_ip" jdbcType="VARCHAR" property="visitIp" />
+    <result column="visit_url" jdbcType="VARCHAR" property="visitUrl" />
+    <result column="visit_time" jdbcType="TIMESTAMP" property="visitTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    visit_id, visit_ip, visit_url, visit_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_visit
+    where visit_id = #{visitId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_visit
+    where visit_id = #{visitId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.my.blog.core.entity.Visit">
+    insert into t_visit (visit_id, visit_ip, visit_url, 
+      visit_time)
+    values (#{visitId,jdbcType=INTEGER}, #{visitIp,jdbcType=VARCHAR}, #{visitUrl,jdbcType=VARCHAR}, 
+      #{visitTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.my.blog.core.entity.Visit">
+    insert into t_visit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="visitId != null">
+        visit_id,
+      </if>
+      <if test="visitIp != null">
+        visit_ip,
+      </if>
+      <if test="visitUrl != null">
+        visit_url,
+      </if>
+      <if test="visitTime != null">
+        visit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="visitId != null">
+        #{visitId,jdbcType=INTEGER},
+      </if>
+      <if test="visitIp != null">
+        #{visitIp,jdbcType=VARCHAR},
+      </if>
+      <if test="visitUrl != null">
+        #{visitUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="visitTime != null">
+        #{visitTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.my.blog.core.entity.Visit">
+    update t_visit
+    <set>
+      <if test="visitIp != null">
+        visit_ip = #{visitIp,jdbcType=VARCHAR},
+      </if>
+      <if test="visitUrl != null">
+        visit_url = #{visitUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="visitTime != null">
+        visit_time = #{visitTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where visit_id = #{visitId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.my.blog.core.entity.Visit">
+    update t_visit
+    set visit_ip = #{visitIp,jdbcType=VARCHAR},
+      visit_url = #{visitUrl,jdbcType=VARCHAR},
+      visit_time = #{visitTime,jdbcType=TIMESTAMP}
+    where visit_id = #{visitId,jdbcType=INTEGER}
+  </update>
+</mapper>

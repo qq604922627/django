@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.web.mapper.CategorysonMapper">
+  <resultMap id="BaseResultMap" type="com.my.blog.core.entity.Categoryson">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_id" jdbcType="INTEGER" property="category_id" />
+    <result column="categoryson_name" jdbcType="VARCHAR" property="categoryson_name" />
+    <result column="categoryson_image" jdbcType="VARCHAR" property="categoryson_image" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, category_id, categoryson_name, categoryson_image
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_categoryson
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectCategoryson"  resultType="com.my.blog.core.entity.Categoryson">
+    select 
+    <include refid="Base_Column_List" />
+    from t_categoryson
+  </select>
+  
+    <select id="selectBycategoryid" parameterType="java.lang.Integer" resultType="com.my.blog.core.entity.Categoryson">
+    select 
+    <include refid="Base_Column_List" />
+    from t_categoryson
+    where category_id = #{category_id,jdbcType=INTEGER}
+  </select>
+  
+ 
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_categoryson
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.my.blog.core.entity.Categoryson">
+    insert into t_categoryson (id, category_id, categoryson_name, 
+      categoryson_image)
+    values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{categorysonName,jdbcType=VARCHAR}, 
+      #{categorysonImage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.my.blog.core.entity.Categoryson">
+    insert into t_categoryson
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="category_id != null">
+        category_id,
+      </if>
+      <if test="categoryson_name != null">
+        categoryson_name,
+      </if>
+      <if test="categoryson_image != null">
+        categoryson_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="category_id != null">
+        #{category_id,jdbcType=INTEGER},
+      </if>
+      <if test="categoryson_name != null">
+        #{categoryson_name,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryson_image != null">
+        #{categoryson_image,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.my.blog.core.entity.Categoryson">
+    update t_categoryson
+    <set>
+      <if test="category_id != null">
+        category_id = #{category_id,jdbcType=INTEGER},
+      </if>
+      <if test="categoryson_name != null">
+        categoryson_name = #{categoryson_image,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryson_image != null">
+        categoryson_image = #{categoryson_image,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.my.blog.core.entity.Categoryson">
+    update t_categoryson
+    set category_id = #{category_id,jdbcType=INTEGER},
+      categoryson_name = #{categoryson_name,jdbcType=VARCHAR},
+      categoryson_image = #{categoryson_image,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

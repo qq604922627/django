@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.blog.web.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.my.blog.core.entity.Comment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="content_id" jdbcType="INTEGER" property="content_id" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, content_id, text, time, ip, email
+  </sql>
+  <select id="selectByContentId" parameterType="java.lang.Integer" resultType="com.my.blog.core.entity.Comment">
+  select 
+  *
+  from t_comment
+  where content_id = #{contentId,jdbcType=INTEGER} order by time desc
+  
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.my.blog.core.entity.Comment">
+    insert into t_comment (id, content_id, text, 
+      time, ip, email)
+    values (#{id,jdbcType=INTEGER}, #{contentId,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.my.blog.core.entity.Comment">
+    insert into t_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="contentId != null">
+        content_id,
+      </if>
+      <if test="text != null">
+        text,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="contentId != null">
+        #{contentId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.my.blog.core.entity.Comment">
+    update t_comment
+    <set>
+      <if test="contentId != null">
+        content_id = #{contentId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.my.blog.core.entity.Comment">
+    update t_comment
+    set content_id = #{contentId,jdbcType=INTEGER},
+      text = #{text,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
